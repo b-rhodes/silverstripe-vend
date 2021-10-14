@@ -1,9 +1,10 @@
 <?php
 namespace Heyday\Vend\SilverStripe;
+use SilverStripe\ORM\DataExtension;
 /**
  * Class VendConfig
  */
-class SiteConfig extends \DataExtension {
+class SiteConfig extends DataExtension {
 
     /**
      * @var array

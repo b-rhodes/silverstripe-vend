@@ -1,11 +1,14 @@
 <?php
 namespace Heyday\Vend\SilverStripe;
 use Heyday\Vend\Exceptions\SetupException;
+use SilverStripe\Admin\LeftAndMain;
+use SilverStripe\View\Requirements;
+use SilverStripe\Core\Config\Config;
 
 /**
  * Class AvailabilityAdmin
  */
-class Admin extends \LeftAndMain
+class Admin extends LeftAndMain
 {
 
     /**
@@ -36,7 +39,7 @@ class Admin extends \LeftAndMain
     /**
      * @var int
      */
-    private static $menu_priority = 0;
+    private static $menu_priority = -50;
 
     /**
      * @var int
@@ -55,7 +58,7 @@ class Admin extends \LeftAndMain
      */
     public function init()
     {
-        \Requirements::css('silverstripe-vend/css/vend-admin.css');
+        Requirements::css('silverstripe-vend/css/vend-admin.css');
         parent::init();
     }
 
@@ -67,9 +70,9 @@ class Admin extends \LeftAndMain
      */
     public function getEditForm($id = null, $fields = null)
     {
-        $client_id = \Config::inst()->get('VendAPI', 'clientID');
-        $client_secret = \Config::inst()->get('VendAPI', 'clientSecret');
-        $redirect_uri = \Config::inst()->get('VendAPI', 'redirectURI');
+        $client_id = Config::inst()->get('VendAPI', 'clientID');
+        $client_secret = Config::inst()->get('VendAPI', 'clientSecret');
+        $redirect_uri = Config::inst()->get('VendAPI', 'redirectURI');
         if (is_null($client_id) || is_null($client_secret) || is_null($redirect_uri)) {
             throw new SetupException;
         }

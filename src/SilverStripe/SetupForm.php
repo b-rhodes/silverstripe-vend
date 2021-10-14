@@ -1,9 +1,18 @@
 <?php
 namespace Heyday\Vend\SilverStripe;
+use SilverStripe\Forms\Form;
+use SilverStripe\Forms\FormAction;
+use SilverStripe\Forms\LiteralField;
+use SilverStripe\Forms\FieldList;
+use SilverStripe\Forms\TextField;
+use SilverStripe\SiteConfig\SiteConfig;
+use SilverStripe\Core\Config\Config;
+use SilverStripe\Control\Director;
+
 /**
  * Class VendSetupForm
  */
-class SetupForm extends \Form
+class SetupForm extends Form
 {
 
     /**
@@ -18,14 +27,14 @@ class SetupForm extends \Form
     {
         $this->addExtraClass('vend-form');
         $this->controller = $controller;
-        $config = \SiteConfig::current_site_config();
+        $config = SiteConfig::current_site_config();
         $vendToken = VendToken::get()->first();
         $vendAccessToken = $vendToken->AccessToken;
         $vendShopName = $config->VendShopName;
-        $fields = new \FieldList();
-        $actions = new \FieldList();
+        $fields = new FieldList();
+        $actions = new FieldList();
         $fields->add(
-            new \LiteralField(
+            new LiteralField(
                 'vend',
                 "<h1>Vend Integration</h1>"
             )
@@ -34,7 +43,7 @@ class SetupForm extends \Form
         if (!is_null($vendAccessToken) && !empty($vendAccessToken)) {
             $url = $this->getAuthURL();
             $fields->add(
-                new \LiteralField(
+                new LiteralField(
                     'explanation',
                     "<p>You're all setup!<br> If you need to reauthenticate, click <a href='$url' target='_blank'>here</a></p>"
                 )
@@ -43,14 +52,14 @@ class SetupForm extends \Form
             if (!is_null($vendShopName) && !empty($vendShopName)) {
                 $url = $this->getAuthURL();
                 $fields->add(
-                    new \LiteralField(
+                    new LiteralField(
                         'explanation',
                         "Please authenticate by clicking <a href='$url' target='_blank'>here</a>"
                     )
                 );
             } else {
                 $fields->add(
-                    new \LiteralField(
+                    new LiteralField(
                         'explanation',
                         "Please remember to set your app settings in a config file."
                     )
@@ -60,13 +69,13 @@ class SetupForm extends \Form
             }
         }
         $fields->add(
-            new \TextField(
+            new TextField(
                 'VendShopName',
                 'Vend Shop Name (yourshopname.vendhq.com)',
                 $vendShopName
             )
         );
-        $actions->push(new \FormAction('doSave', 'Save'));
+        $actions->push(new FormAction('doSave', 'Save'));
 
         // Reduce attack surface by enforcing POST requests
         $this->setFormMethod('POST', true);
@@ -81,8 +90,8 @@ class SetupForm extends \Form
      */
     public function getAuthURL()
     {
-        $clientID = \Config::inst()->get('VendAPI', 'clientID');
-        $redirectURI = \Director::absoluteBaseURLWithAuth() . \Config::inst()->get('VendAPI', 'redirectURI');
+        $clientID = Config::inst()->get('VendAPI', 'clientID');
+        $redirectURI = Director::absoluteBaseURLWithAuth() . Config::inst()->get('VendAPI', 'redirectURI');
         return "https://secure.vendhq.com/connect?response_type=code&client_id=$clientID&redirect_uri=$redirectURI";
     }
 
@@ -93,7 +102,7 @@ class SetupForm extends \Form
     public function doSave($data)
     {
         $shopName = $data['VendShopName'];
-        $config = \SiteConfig::current_site_config();
+        $config = SiteConfig::current_site_config();
         $config->VendShopName = $shopName;
         $config->write();
         $this->controller->redirectBack();

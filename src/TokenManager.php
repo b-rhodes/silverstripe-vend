@@ -2,6 +2,8 @@
 namespace Heyday\Vend;
 
 use Heyday\Vend\SilverStripe\VendToken;
+use SilverStripe\Core\Config\Config;
+use SilverStripe\Control\Director;
 
 /**
  * This class is responsible for returning the token,
@@ -20,13 +22,13 @@ class TokenManager
      */
     public function __construct()
     {
-        $this->config = \SiteConfig::current_site_config();
+        $this->config = SiteConfig::current_site_config();
         $vendShopName = $this->config->VendShopName;
         $this->url = "https://$vendShopName.vendhq.com";
         //config
-        $this->client_id = \Config::inst()->get('VendAPI', 'clientID');
-        $this->client_secret = \Config::inst()->get('VendAPI', 'clientSecret');
-        $this->redirect_uri = \Director::absoluteBaseURLWithAuth() . \Config::inst()->get('VendAPI', 'redirectURI');
+        $this->client_id = Config::inst()->get('VendAPI', 'clientID');
+        $this->client_secret = Config::inst()->get('VendAPI', 'clientSecret');
+        $this->redirect_uri = Director::absoluteBaseURLWithAuth() . \Config::inst()->get('VendAPI', 'redirectURI');
         if (is_null($this->client_id) || is_null($this->client_secret)) {
             throw new Exceptions\SetupException;
         }

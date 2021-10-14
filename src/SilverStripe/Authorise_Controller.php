@@ -1,5 +1,9 @@
 <?php
 namespace Heyday\Vend\SilverStripe;
+use SilverStripe\Control\Controller;
+use SilverStripe\Security\Member;
+use SilverStripe\Security\Permission;
+
 /**
  * This controller is hit by Vend after Shop owner has authorised your app.
  * The authorisation code is used to make the first token request.
@@ -12,7 +16,7 @@ use Heyday\Vend\TokenManager;
  * Class Authorise_Controller
  * @package Heyday\Vend\SilverStripe
  */
-class Authorise_Controller extends \Controller
+class Authorise_Controller extends Controller
 {
     /**
      * @var TokenManager
@@ -32,7 +36,7 @@ class Authorise_Controller extends \Controller
      */
     public function index()
     {
-        if (\Member::currentUserID() && \Permission::check('ADMIN')) {
+        if (Member::currentUserID() && Permission::check('ADMIN')) {
             $code = $this->request->getVar('code');
             if (isset($code) && !empty($code)) {
                 if ($this->getFirstToken($code)) {

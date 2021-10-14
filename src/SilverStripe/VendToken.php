@@ -1,9 +1,11 @@
 <?php
 namespace Heyday\Vend\SilverStripe;
+use SilverStripe\ORM\DataObject;
+
 /**
  * Class Token
  */
-class VendToken extends \DataObject
+class VendToken extends DataObject
 {
 
     private static $db = array(
