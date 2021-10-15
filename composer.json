@@ -14,8 +14,14 @@
   "support": {
     "issues": "http://github.com/heyday/silverstripe-vend/issues"
   },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/tomstgeorge/vend"
+        }
+    ],  
   "require": {
-    "vendapi/vendapi": "1.5"
+    "vendapi/vendapi": "dev-ss4-upgrade"
   },
   "autoload": {
     "psr-4": { "Heyday\\Vend\\": "src/" }
