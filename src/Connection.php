@@ -2,6 +2,7 @@
 namespace Heyday\Vend;
 
 use VendAPI\VendAPI;
+use SilverStripe\SiteConfig\SiteConfig;
 
 /**
  * Class Connector
