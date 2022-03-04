@@ -4,7 +4,7 @@ namespace Heyday\Vend;
 use Heyday\Vend\SilverStripe\VendToken;
 use SilverStripe\Core\Config\Config;
 use SilverStripe\Control\Director;
-use SilverStripe\Core\SiteConfig;
+use SilverStripe\SiteConfig\SiteConfig;
 
 /**
  * This class is responsible for returning the token,
